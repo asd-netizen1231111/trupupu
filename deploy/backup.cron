@@ -1,0 +1,11 @@
+# Расписание бэкапа для crontab пользователя deploy: каждый день в 03:30 (по часовому поясу сервера).
+# Путь к скрипту поправьте под свой каталог, где лежит репозиторий на сервере.
+#
+# Установка (из каталога репозитория, под deploy), повторный запуск не дублирует строку:
+#   crontab -l 2>/dev/null | grep -q 'deploy/backup.sh' || (crontab -l 2>/dev/null; cat deploy/backup.cron) | crontab -
+# Проверка:   crontab -l
+# Лог работы: tail -n 30 /var/backups/shop/backup.log   (скрипт пишет его сам, поэтому вывод cron отбрасывается)
+# Код возврата последнего запуска - в логе: строка "Бэкап завершён успешно" или "[ERROR]".
+# Предусловия (~/.pgpass, ~/.config/shop-backup.env, каталог /var/backups/shop) - в шапке backup.sh.
+MAILTO=""
+30 3 * * * /bin/bash /home/deploy/site-internetmag/deploy/backup.sh >/dev/null 2>&1
